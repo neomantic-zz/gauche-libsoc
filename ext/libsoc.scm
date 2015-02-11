@@ -3,17 +3,29 @@
 ;;;
 
 (define-module ext.libsoc
-  (export test-gauche_libsoc ;; dummy
-          )
+  (export <soc-gpio>
+	  gpio-request
+	  gpio-free
+	  gpio-direction-set!
+	  gpio-level-set!)
   )
 (select-module ext.libsoc)
 
 ;; Loads extension
 (dynamic-load "gauche_libsoc")
 
-;;
-;; Put your Scheme definitions here
-;;
+(define (gpio-direction-set! gpio mode)
+  (%gpio-direction-set!
+   gpio
+   (cond
+    ((eql? direction 'output) (%gpio-direction-output))
+    ((eql? direction 'input)  (%gpio-direction-input))
+    ((eql? direction 'error)  (%gpio-direction-error)))))
 
-
-
+(define (gpio-level-set! gpio mode)
+  (%gpio-level-set!
+   gpio
+   (cond
+    ((eql? direction 'high)  (%gpio-level-high))
+    ((eql? direction 'low)   (%gpio-level-low))
+    ((eql? direction 'error) (%pio-level-error)))))

@@ -6,12 +6,83 @@
 #include \"gauche_libsoc.h\"
 "
 
-;; The following entry is a dummy one.
-;; Replace it for your definitions.
+(define-cfn get_gpio_direction (obj::ScmObj) ::gpio_direction
+  (let* ((i :: int (Scm_GetInteger obj)))
+    (SCM_RETURN (cast gpio_direction i))))
 
-(define-cproc test-gauche_libsoc () ::<const-cstring>
-  (result "gauche_libsoc is working"))
+(define-cfn get_gpio_level (obj::ScmObj) ::gpio_level
+  (let* ((i :: int (Scm_GetInteger obj)))
+    (SCM_RETURN (cast gpio_level i))))
 
+(define-type <gpio-level>
+  "gpio_level" "gpio_level" "SCM_INTEGERP" "get_gpio_level" "make_gio_level")
+
+(define-type <gpio-direction>
+  "gpio_direction" "gpio_direction" "SCM_INTEGERP" "get_gpio_direction" "make_gpio_direction")
+
+(define-cclass <soc-gpio> :private
+  "ScmSocGpio*" "Scm_SocGpioClass" () ()
+  [printer
+   (Scm_Printf port "#<soc-gpio>")])
+
+(define-cproc gpio-request (gpio-id::<uint> gpio-mode::<int>)
+  (let* ([z::ScmSocGpio* (SCM_NEW ScmSocGpio)])
+    (SCM_SET_CLASS z (& Scm_SocGpioClass))
+    (set! (-> z gpio) (libsoc_gpio_request gpio-id gpio-mode))
+    (result (SCM_OBJ z))))
+
+(define-cproc gpio-free (soc::<soc-gpio>)
+  (result (Scm_MakeInteger (libsoc_gpio_free (cast gpio* (-> soc gpio))))))
+
+(define-cproc %gpio-direction-set! (current-gpio::<soc-gpio> gpio-direction::<gpio-direction>) ::<int>
+  (result (libsoc_gpio_set_direction (-> current-gpio gpio) gpio-direction)))
+
+(define-cfn gpio_direction_error () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger DIRECTION_ERROR)))
+
+(define-cfn gpio_direction_input () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger INPUT)))
+
+(define-cfn gpio_direction_output () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger OUTPUT)))
+
+(define-cproc %gpio-direction-input () ::<integer>
+  gpio_direction_input)
+
+(define-cproc %gpio-direction-output () ::<integer>
+  gpio_direction_output)
+
+(define-cproc %gpio-direction-error () ::<integer>
+  gpio_direction_error)
+
+(define-cfn make_gpio_direction (obj::gpio_direction) ::ScmObj
+  (let* ((i :: ScmObj (Scm_MakeInteger obj)))
+    (SCM_RETURN i)))
+
+(define-cproc %gpio-level-set! (current-gpio::<soc-gpio> gpio-level::<gpio-level>) ::<int>
+  (result (libsoc_gpio_set_level (-> current-gpio gpio) gpio-level)))
+
+(define-cfn gpio_level_error () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger LEVEL_ERROR)))
+
+(define-cfn gpio_level_low () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger LOW)))
+
+(define-cfn gpio_level_high () ::ScmObj :static
+  (SCM_RETURN (Scm_MakeInteger HIGH)))
+
+(define-cproc %gpio-level-high () ::<integer>
+  gpio_level_high)
+
+(define-cproc %gpio-level-low () ::<integer>
+  gpio_level_low)
+
+(define-cproc %gpio-level-error () ::<integer>
+  gpio_level_error)
+
+(define-cfn make_gpio_level (obj::gpio_level) ::ScmObj
+  (let* ((i :: ScmObj (Scm_MakeInteger obj)))
+    (SCM_RETURN i)))
 
 ;; Local variables:
 ;; mode: scheme

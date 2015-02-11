@@ -5,16 +5,6 @@
 #include "gauche_libsoc.h"
 
 /*
- * The following function is a dummy one; replace it for
- * your C function definitions.
- */
-
-ScmObj test_gauche_libsoc(void)
-{
-    return SCM_MAKE_STR("gauche_libsoc is working");
-}
-
-/*
  * Module initialization function.
  */
 extern void Scm_Init_gauche_libsoclib(ScmModule*);

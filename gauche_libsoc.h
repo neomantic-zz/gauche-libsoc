@@ -8,15 +8,16 @@
 
 #include <gauche.h>
 #include <gauche/extend.h>
+#include <gauche/class.h>
+#include <libsoc_gpio.h>
 
 SCM_DECL_BEGIN
 
-/*
- * The following entry is a dummy one.
- * Replace it for your declarations.
- */
+typedef struct ScmSocGpioRec {
+  SCM_HEADER;
+  gpio *gpio;
+} ScmSocGpio;
 
-extern ScmObj test_gauche_libsoc(void);
 
 /* Epilogue */
 SCM_DECL_END
