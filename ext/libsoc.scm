@@ -29,3 +29,12 @@
     ((eql? direction 'high)  (%gpio-level-high))
     ((eql? direction 'low)   (%gpio-level-low))
     ((eql? direction 'error) (%pio-level-error)))))
+
+(define (gpio-request id mode)
+  (%gpio-request
+   id
+   (cond
+    ((eq? mode 'greedy) LS_GREEDY)
+    ((eq? mode 'weak) LS_WEAK)
+    ((eq? mode 'shared LS_SHARED))
+    (else LS_SHARED))))

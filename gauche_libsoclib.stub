@@ -6,6 +6,10 @@
 #include \"gauche_libsoc.h\"
 "
 
+(define-enum-conditionally LS_SHARED)
+(define-enum-conditionally LS_GREEDY)
+(define-enum-conditionally LS_WEAK)
+
 (define-cfn get_gpio_direction (obj::ScmObj) ::gpio_direction
   (let* ((i :: int (Scm_GetInteger obj)))
     (SCM_RETURN (cast gpio_direction i))))
@@ -25,7 +29,7 @@
   [printer
    (Scm_Printf port "#<soc-gpio>")])
 
-(define-cproc gpio-request (gpio-id::<uint> gpio-mode::<int>)
+(define-cproc %gpio-request (gpio-id::<uint> gpio-mode::<int>)
   (let* ([z::ScmSocGpio* (SCM_NEW ScmSocGpio)])
     (SCM_SET_CLASS z (& Scm_SocGpioClass))
     (set! (-> z gpio) (libsoc_gpio_request gpio-id gpio-mode))
@@ -83,6 +87,7 @@
 (define-cfn make_gpio_level (obj::gpio_level) ::ScmObj
   (let* ((i :: ScmObj (Scm_MakeInteger obj)))
     (SCM_RETURN i)))
+
 
 ;; Local variables:
 ;; mode: scheme
