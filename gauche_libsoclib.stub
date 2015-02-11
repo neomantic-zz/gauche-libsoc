@@ -6,9 +6,9 @@
 #include \"gauche_libsoc.h\"
 "
 
-(define-enum-conditionally LS_SHARED)
-(define-enum-conditionally LS_GREEDY)
-(define-enum-conditionally LS_WEAK)
+(define-enum LS_SHARED)
+(define-enum LS_GREEDY)
+(define-enum LS_WEAK)
 
 (define-cfn get_gpio_direction (obj::ScmObj) ::gpio_direction
   (let* ((i :: int (Scm_GetInteger obj)))
