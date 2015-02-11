@@ -14,8 +14,8 @@
 (define (randomize-gpio-level)
   (let ((random-int (random-integer 2)))
     (cond
-     ((eq? 0) 'low)
-     ((eq? 1) 'high)
+     ((eq? 0 random-int) 'low)
+     ((eq? 1 random-int) 'high)
      (else 'low))))
 
 ;; returns a lambda that can toggle the levels of a gpio
