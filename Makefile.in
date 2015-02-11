@@ -9,6 +9,9 @@ datarootdir = @datarootdir@
 srcdir      = @srcdir@
 VPATH       = $(srcdir)
 
+CFLAGS   = @LIBSOC_CFLAGS@
+LIBS     = @LIBSOC_LIBS@
+
 # These may be overridden by make invocators
 DESTDIR        =
 GOSH           = "@GOSH@"
@@ -23,7 +26,7 @@ EXEEXT = @EXEEXT@
 LOCAL_PATHS = "@LOCAL_PATHS@"
 
 # Module-specific stuff
-PACKAGE   = gauche-libsoc
+PACKAGE   = @PACKAGE@
 
 ARCHFILES = gauche_libsoc.$(SOEXT)
 SCMFILES  = $(srcdir)/ext/libsoc.scm
@@ -43,8 +46,9 @@ gauche_libsoc_SRCS = $(srcdir)/gauche_libsoc.c $(srcdir)/gauche_libsoclib.stub
 all : $(TARGET)
 
 gauche_libsoc.$(SOEXT): $(gauche_libsoc_SRCS)
-	$(GAUCHE_PACKAGE) compile \
-	  --local=$(LOCAL_PATHS) --verbose gauche_libsoc $(gauche_libsoc_SRCS)
+	$(GAUCHE_PACKAGE) compile --verbose \
+	  --cflags="$(CFLAGS)" --libs="$(LIBS)" \
+	  --local=$(LOCAL_PATHS) gauche_libsoc $(gauche_libsoc_SRCS)
 
 check : all
 	@rm -f test.log
@@ -71,4 +75,3 @@ distclean : clean
 
 maintainer-clean : clean
 	rm -rf $(CONFIG_GENERATED) configure VERSION
-
