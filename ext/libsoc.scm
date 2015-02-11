@@ -18,17 +18,17 @@
   (%gpio-direction-set!
    gpio
    (cond
-    ((eql? direction 'output) (%gpio-direction-output))
-    ((eql? direction 'input)  (%gpio-direction-input))
-    ((eql? direction 'error)  (%gpio-direction-error)))))
+    ((eq? direction 'output) (%gpio-direction-output))
+    ((eq? direction 'input)  (%gpio-direction-input))
+    ((eq? direction 'error)  (%gpio-direction-error)))))
 
 (define (gpio-level-set! gpio level)
   (%gpio-level-set!
    gpio
    (cond
-    ((eql? level 'high)  (%gpio-level-high))
-    ((eql? level 'low)   (%gpio-level-low))
-    ((eql? level 'error) (%pio-level-error)))))
+    ((eq? level 'high)	(%gpio-level-high))
+    ((eq? level 'low)	(%gpio-level-low))
+    ((eq? level 'error) (%pio-level-error)))))
 
 (define (gpio-request id mode)
   (%gpio-request
