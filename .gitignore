@@ -2,7 +2,6 @@
 *.o
 *.so
 compile
-config.guess
 config.log
 config.status
 libtool
