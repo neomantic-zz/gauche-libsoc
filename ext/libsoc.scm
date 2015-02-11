@@ -36,5 +36,5 @@
    (cond
     ((eq? mode 'greedy) LS_GREEDY)
     ((eq? mode 'weak) LS_WEAK)
-    ((eq? mode 'shared LS_SHARED))
+    ((eq? mode 'shared) LS_SHARED)
     (else LS_SHARED))))
