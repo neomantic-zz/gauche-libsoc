@@ -14,7 +14,7 @@
 ;; Loads extension
 (dynamic-load "gauche_libsoc")
 
-(define (gpio-direction-set! gpio mode)
+(define (gpio-direction-set! gpio direction)
   (%gpio-direction-set!
    gpio
    (cond
@@ -22,13 +22,13 @@
     ((eql? direction 'input)  (%gpio-direction-input))
     ((eql? direction 'error)  (%gpio-direction-error)))))
 
-(define (gpio-level-set! gpio mode)
+(define (gpio-level-set! gpio level)
   (%gpio-level-set!
    gpio
    (cond
-    ((eql? direction 'high)  (%gpio-level-high))
-    ((eql? direction 'low)   (%gpio-level-low))
-    ((eql? direction 'error) (%pio-level-error)))))
+    ((eql? level 'high)  (%gpio-level-high))
+    ((eql? level 'low)   (%gpio-level-low))
+    ((eql? level 'error) (%pio-level-error)))))
 
 (define (gpio-request id mode)
   (%gpio-request
