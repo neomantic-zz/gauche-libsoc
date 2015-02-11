@@ -20,8 +20,8 @@
 
 ;; returns a lambda that can toggle the levels of a gpio
 (define (gpio-toggle-make gpio-id)
-  (let ((gpio (gpio-request gpio-id gpio-mode/weak)))
-    (gpio-direction-set! gpio gpio-direction/output)
+  (let ((gpio (gpio-request gpio-id 'shared)))
+    (gpio-direction-set! gpio 'output)
     (lambda ()
       (gpio-level-set! gpio (randomize-gpio-level)))))
 
